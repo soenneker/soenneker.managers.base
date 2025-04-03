@@ -42,7 +42,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
         <PackageReference Include="Soenneker.Redis.Util" Version="3.0.4646" />
         <PackageReference Include="Soenneker.Utils.UserContext" Version="2.1.1499" />
     </ItemGroup>
