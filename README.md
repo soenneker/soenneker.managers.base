@@ -5,7 +5,7 @@
 
 # Soenneker.Managers.Base
 
-Provides a base implementation for manager classes, offering common services such as logging, user context, and Redis utilities.
+An abstract base class for managers that need Redis access, the current user context, and a shared logger.
 
 ## Install
 
@@ -15,4 +15,30 @@ dotnet add package Soenneker.Managers.Base
 
 ## What you get
 
-- `IBaseManager` — Provides a base implementation for manager classes, offering common services such as logging, user context, and Redis utilities.
+- `BaseManager` exposes `RedisUtil`, `UserContext`, `Logger`, and an `IsAdmin` shortcut to derived classes.
+- `IBaseManager` is an empty marker interface for identifying manager services.
+
+## Usage
+
+```csharp
+public sealed class OrdersManager : BaseManager, IOrdersManager
+{
+    public OrdersManager(
+        IRedisUtil redisUtil,
+        ILogger<BaseManager> logger,
+        IUserContext userContext)
+        : base(redisUtil, logger, userContext)
+    {
+    }
+
+    public bool CanManageOrders(string orderId)
+    {
+        Logger.LogInformation("Checking access to order {OrderId}", orderId);
+        return IsAdmin;
+    }
+}
+```
+
+Register the concrete manager with the lifetime appropriate to its dependencies. In web applications that normally means scoped, because the user context is request-specific.
+
+This package does not provide authorization by itself. `IsAdmin` only reflects `IUserContext.IsAdmin()`; enforce the application's authorization policy in the manager or at the request boundary.
