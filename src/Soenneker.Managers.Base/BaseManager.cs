@@ -5,6 +5,7 @@ using Soenneker.Utils.UserContext.Abstract;
 
 namespace Soenneker.Managers.Base;
 
+/// <inheritdoc cref="IBaseManager" />
 public abstract class BaseManager : IBaseManager
 {
     /// <summary>
